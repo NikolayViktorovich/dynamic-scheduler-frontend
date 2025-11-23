@@ -1,2 +1,0 @@
-"""Education Planner Backend Application"""
-
