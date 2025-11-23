@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { X, Check, Target, Zap, ArrowRight, CornerUpLeft } from 'lucide-react';
 import { useData } from '../context/DataContext';
+import { useToast } from '../context/ToastContext';
 
 const ChangeMinorModal = ({ isOpen, onClose, onMinorChanged }) => {
   const { MINORS, selectedMinorId, setMinor, getRecommendedMinors } = useData();
+  const { success } = useToast();
   const [localSelectedId, setLocalSelectedId] = useState(selectedMinorId);
   const [showModal, setShowModal] = useState(false);
   
@@ -31,8 +33,12 @@ const ChangeMinorModal = ({ isOpen, onClose, onMinorChanged }) => {
 
   const handleSave = () => {
     if (localSelectedId && localSelectedId !== selectedMinorId) {
+      const selectedMinor = MINORS.find(m => m.id === localSelectedId);
       setMinor(localSelectedId);
       onMinorChanged(localSelectedId);
+      if (selectedMinor) {
+        success(`Майнер "${selectedMinor.name}" успешно изменен!`);
+      }
     }
     handleClose();
   };

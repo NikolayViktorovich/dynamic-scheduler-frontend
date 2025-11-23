@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { LogOut, Target, User, Lock, X, Mail, BookOpen } from 'lucide-react';
 import ChangePasswordModal from './ChangePasswordModal';
 import ChangeMinorModal from './ChangeMinorModal';
+import { useToast } from '../context/ToastContext';
 
 const UserProfileModal = React.memo(({ 
   isOpen, 
@@ -11,6 +12,7 @@ const UserProfileModal = React.memo(({
   onChangeMinor,
   onChangePassword 
 }) => {
+  const { success } = useToast();
   const [showModal, setShowModal] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isMinorModalOpen, setIsMinorModalOpen] = useState(false);
@@ -52,13 +54,14 @@ const UserProfileModal = React.memo(({
     const newMinorName = 'Новый Майнер';
     setCurrentMinorName(newMinorName);
     onChangeMinor?.(newMinorId);
-  }, [onChangeMinor]);
+    success('Майнер успешно изменен!');
+  }, [onChangeMinor, success]);
 
   const handleChangePasswordSubmit = useCallback((data) => {
     console.log('Password change submitted:', data);
-    alert('Пароль успешно изменен (заглушка)');
+    success('Пароль успешно изменен!');
     handleClosePasswordModal();
-  }, [handleClosePasswordModal]);
+  }, [handleClosePasswordModal, success]);
 
   if (!isOpen || !user) return null;
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { DataProvider, useData } from './context/DataContext'
+import { ToastProvider } from './context/ToastContext'
 import Dashboard from './pages/Index'
 import WhatIf from './pages/Builder'
 import Header from './components/Header'
@@ -61,9 +62,11 @@ const AppContent = () => {
 function App() {
   return (
     <Router>
-      <DataProvider>
-        <AppContent />
-      </DataProvider>
+      <ToastProvider>
+        <DataProvider>
+          <AppContent />
+        </DataProvider>
+      </ToastProvider>
     </Router>
   );
 }

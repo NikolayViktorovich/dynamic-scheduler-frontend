@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowRight, Check, GraduationCap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useData } from '../context/DataContext';
+import { useToast } from '../context/ToastContext';
 
 const MAIN_SPECIALTIES = [
   { 
@@ -27,6 +28,7 @@ const MAIN_SPECIALTIES = [
 const SpecialtySelection = () => {
   const navigate = useNavigate();
   const { setSpecialty } = useData();
+  const { success } = useToast();
   const [localSelectedId, setLocalSelectedId] = useState(null);
 
   const handleSelect = (id) => {
@@ -35,7 +37,9 @@ const SpecialtySelection = () => {
 
   const handleContinue = () => {
     if (localSelectedId) {
+      const selectedSpecialty = MAIN_SPECIALTIES.find(s => s.id === localSelectedId);
       setSpecialty(localSelectedId);
+      success(`Специальность "${selectedSpecialty?.name}" выбрана!`);
       navigate('/onboarding/minor');
     }
   };

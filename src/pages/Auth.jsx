@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight, SkipForward } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useData } from '../context/DataContext'
+import { useToast } from '../context/ToastContext'
 
 // --- НОВЫЙ КОМПОНЕНТ ДЛЯ СПИННЕРА ---
 // Использует анимацию 'animate-spin' и градиентный фон через Tailwind
@@ -41,6 +42,7 @@ const LoadingSpinner = () => (
 const Auth = () => {
   const navigate = useNavigate()
   const { setIsUrFUStudent } = useData()
+  const { success, error: showError } = useToast()
 
   const [isLogin, setIsLogin] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
@@ -84,11 +86,14 @@ const Auth = () => {
       setIsUrFUStudent(true)
       localStorage.setItem('isUrFUStudent', 'true')
       localStorage.setItem('isAuthenticated', 'true')
+      success('Регистрация прошла успешно!')
       navigate('/onboarding/specialty')
 
     } catch (error) {
       console.error('Ошибка регистрации:', error)
-      setError(error.message || 'Произошла ошибка при регистрации')
+      const errorMessage = error.message || 'Произошла ошибка при регистрации'
+      setError(errorMessage)
+      showError(errorMessage)
     } finally {
       setIsLoading(false)
     }
@@ -104,6 +109,7 @@ const Auth = () => {
     setIsUrFUStudent(true)
     localStorage.setItem('isUrFUStudent', 'true')
     localStorage.setItem('isAuthenticated', 'true')
+    success('Вход выполнен успешно!')
     navigate('/onboarding/specialty')
 
     setIsLoading(false) // Важно вернуть, если бы был реальный API-вызов
@@ -150,11 +156,6 @@ const Auth = () => {
           </p>
         </div>
 
-        {error && (
-          <div className="mb-4 p-3 bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700 rounded-lg text-red-700 dark:text-red-300 text-sm">
-            {error}
-          </div>
-        )}
 
         <form className="space-y-5" onSubmit={handleAuthSubmit}>
           {!isLogin && (

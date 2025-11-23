@@ -234,7 +234,7 @@ export const DataProvider = ({ children }) => {
       const coverage = calculateCoverage();
 
       return {
-          studentName: 'Иванов Иван Иванович', // Мок-имя
+          studentName: 'Nikolas Peske',
           primarySpecialty: primarySpecialty.name,
           minor: selectedMinor.name,
           coverage: coverage,

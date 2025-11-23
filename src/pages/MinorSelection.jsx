@@ -2,10 +2,12 @@ import React, { useState, useMemo } from 'react';
 import { ArrowRight, BookOpen, TrendingUp, Target, Zap, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useData } from '../context/DataContext';
+import { useToast } from '../context/ToastContext';
 
 const MinorSelection = () => {
   const navigate = useNavigate();
   const { MINORS, selectedMinorId, setMinor, getRecommendedMinors, primarySpecialty } = useData();
+  const { success } = useToast();
   const [localSelectedId, setLocalSelectedId] = useState(selectedMinorId);
 
   const recommendedMinors = useMemo(() => getRecommendedMinors(), [getRecommendedMinors]);
@@ -17,7 +19,9 @@ const MinorSelection = () => {
   };
 
   const handleContinue = () => {
+    const selectedMinor = MINORS.find(m => m.id === localSelectedId);
     setMinor(localSelectedId);
+    success(`Майнер "${selectedMinor?.name}" выбран! Добро пожаловать!`);
     navigate('/dashboard');
   };
 

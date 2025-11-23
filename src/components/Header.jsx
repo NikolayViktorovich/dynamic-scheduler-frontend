@@ -3,11 +3,13 @@ import { User, Settings, LogOut, Moon, Sun, Home } from 'lucide-react'; // Targe
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useData } from '../context/DataContext';
 import UserProfileModal from './UserProfileModal';
+import { useToast } from '../context/ToastContext';
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { isUrFUStudent, selectedSpecialtyId, selectedMinorId } = useData();
+  const { success, info } = useToast();
   const [isDark, setIsDark] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
     
@@ -34,16 +36,21 @@ const Header = () => {
     if (newIsDark) {
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
+      info('Темная тема включена');
     } else {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
+      info('Светлая тема включена');
     }
   };
 
   const handleLogout = () => {
     localStorage.removeItem('isUrFUStudent');
     localStorage.removeItem('isAuthenticated');
-    window.location.href = '/onboarding/auth';
+    success('Вы успешно вышли из аккаунта');
+    setTimeout(() => {
+      window.location.href = '/onboarding/auth';
+    }, 500);
   };
     
   const handleProfileClick = () => {
@@ -56,7 +63,7 @@ const Header = () => {
 
   const handleChangePassword = (data) => {
     console.log('Change password submitted:', data);
-    alert('Пароль успешно изменен (заглушка)');
+    // Уведомление показывается в UserProfileModal
     handleCloseModal();
   };
     
@@ -65,8 +72,8 @@ const Header = () => {
   };
 
   const mockUser = {
-    name: 'Иванов Иван',
-    email: 'student@urfu.ru',
+    name: 'Nikolas Peske',
+    email: 'nikolas2005@mail.ru',
     specialty: 'Информатика и вычислительная техника',    
     minor: 'Веб-разработка',    
     avatarInitials: 'ИИ'

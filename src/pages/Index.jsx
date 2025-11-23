@@ -17,6 +17,7 @@ import Roadmap from '../components/Roadmap';
 import CourseCard from '../components/CourseCard';
 import ResumeModal from '../components/ResumeModal';
 import { useData } from '../context/DataContext';
+import { useToast } from '../context/ToastContext';
 
 const Dashboard = () => {
     const { 
@@ -33,7 +34,9 @@ const Dashboard = () => {
         selectedElectives,
         generateSkillResume,
         calculateCoverage,
+        COURSES,
     } = useData();
+    const { success, info } = useToast();
 
     const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
     const [currentResume, setCurrentResume] = useState(null);
@@ -48,13 +51,34 @@ const Dashboard = () => {
         const resume = generateSkillResume();
         setCurrentResume(resume);
         setIsResumeModalOpen(true);
+        success('Резюме навыков сгенерировано!');
     };
     
     const handleCourseClick = (course) => {
         if (course.type === 'obligatory' && !passedCourseIds.includes(course.id)) {
             console.log('Показываем детали обязательного курса:', course.name);
+            info(`Курс "${course.name}" является обязательным`);
         } else if (course.type === 'elective' && !passedCourseIds.includes(course.id)) {
+            const wasSelected = selectedElectives.includes(course.id);
             toggleCourseSelection(course.id);
+            if (wasSelected) {
+                success(`Курс "${course.name}" удален из плана`);
+            } else {
+                success(`Курс "${course.name}" добавлен в план`);
+            }
+        }
+    };
+
+    const handleToggleCourse = (courseId) => {
+        const course = COURSES.find(c => c.id === courseId);
+        const wasSelected = selectedElectives.includes(courseId);
+        toggleCourseSelection(courseId);
+        if (course) {
+            if (wasSelected) {
+                success(`Курс "${course.name}" удален из плана`);
+            } else {
+                success(`Курс "${course.name}" добавлен в план`);
+            }
         }
     };
 
@@ -209,7 +233,7 @@ const Dashboard = () => {
                                         key={course.id} 
                                         course={course} 
                                         isSelected={selectedElectives.includes(course.id)}
-                                        onSelect={() => toggleCourseSelection(course.id)}
+                                        onSelect={() => handleToggleCourse(course.id)}
                                     />
                                 ))
                             ) : (
