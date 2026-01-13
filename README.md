@@ -6,7 +6,9 @@
 
 Этот проект занял призовое место на хакатоне от Сбербанка!
 
-![Грамота](https://i.postimg.cc/SNZ8hkPj/Golubcov-Dei-kstriki-page-0001.jpg)
+<p align="center">
+  <img src="https://i.postimg.cc/SNZ8hkPj/Golubcov-Dei-kstriki-page-0001.jpg" alt="Грамота" width="600">
+</p>
 
 ![Скриншот](https://i.postimg.cc/NFsy3zks/Снимок_экрана_2026_01_13_в_18_54_48.png)
 ![Скриншот](https://i.postimg.cc/MH6cCFmS/Снимок_экрана_2026_01_13_в_18_54_59.png)
